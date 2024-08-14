@@ -33,8 +33,8 @@ const App = () => {
     for (let line of lines) {
       const [a, b, c] = line;
       if (board[a] && board[b] && board[c] &&
-          board[a].player === board[b].player &&
-          board[a].player === board[c].player) {
+        board[a].player === board[b].player &&
+        board[a].player === board[c].player) {
         return board[a].player;
       }
     }
@@ -49,7 +49,7 @@ const App = () => {
       newBoard[index] = { player: currentPlayer, size: selectedSize };
       setBoard(newBoard);
 
-      const newTokens = {...tokens};
+      const newTokens = { ...tokens };
       newTokens[currentPlayer.name][selectedSize]--;
       setTokens(newTokens);
 
@@ -87,10 +87,26 @@ const App = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-4xl font-bold mb-8">Advanced Tic-Tac-Toe</h1>
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <p>Current Player: {currentPlayer.name}</p>
         <p>Selected Size: {selectedSize}</p>
+      </div> */}
+      <div className="mb-4">
+        <p className="text-xl font-semibold">
+          Next Player:
+          <span
+            className="ml-2 px-3 py-1 rounded"
+            style={{
+              backgroundColor: currentPlayer.color,
+              color: currentPlayer.color === 'orange' ? 'black' : 'white'
+            }}
+          >
+            {currentPlayer.name}
+          </span>
+        </p>
+        <p>Selected Size: {selectedSize}</p>
       </div>
+
       <div className="mb-4">
         {[1, 2, 3].map(size => (
           <button
