@@ -1,9 +1,15 @@
+// you have a game like tictactoe, but the 2 players have each 9 tokens
+//  in 3 different sizes. 3 of size 1, 3 of size 2 and 3 of size 3. player 1 
+//  has the color orange, player 2 the color 2. the token can be placed by 
+//  the player in every cell of the nine fields, if the cell is empty or the
+//   value of the token is higher than the token already in the cell. winner 
+//   is the player who has 3 token of his color in horizontal, vertical or 
+//   diagonal. design this game and its logic.
+
 import React, { useState, useEffect } from 'react';
 
-const BOARD_SIZE = 3;
 const PLAYER_1 = { name: 'Player 1', color: 'orange' };
 const PLAYER_2 = { name: 'Player 2', color: 'blue' };
-const TOKEN_SIZES = [1, 2, 3];
 
 const initialTokens = {
   [PLAYER_1.name]: { 1: 3, 2: 3, 3: 3 },
@@ -11,7 +17,7 @@ const initialTokens = {
 };
 
 const App = () => {
-  const [board, setBoard] = useState(Array(BOARD_SIZE * BOARD_SIZE).fill(null));
+  const [board, setBoard] = useState(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState(PLAYER_1);
   const [selectedSize, setSelectedSize] = useState(1);
   const [tokens, setTokens] = useState(initialTokens);
@@ -32,11 +38,6 @@ const App = () => {
         return board[a].player;
       }
     }
-
-    if (board.every(cell => cell !== null)) {
-      return 'draw';
-    }
-
     return null;
   };
 
@@ -66,13 +67,12 @@ const App = () => {
     const cell = board[index];
     return (
       <div
-        key={index}
-        className="w-20 h-20 border border-gray-400 flex items-center justify-center cursor-pointer"
+        className={`w-20 h-20 border border-gray-400 flex items-center justify-center cursor-pointer`}
         onClick={() => handleCellClick(index)}
       >
         {cell && (
           <div
-            className="rounded-full"
+            className={`rounded-full`}
             style={{
               backgroundColor: cell.player.color,
               width: `${cell.size * 20}px`,
@@ -87,6 +87,10 @@ const App = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-4xl font-bold mb-8">Advanced Tic-Tac-Toe</h1>
+      {/* <div className="mb-4">
+        <p>Current Player: {currentPlayer.name}</p>
+        <p>Selected Size: {selectedSize}</p>
+      </div> */}
       <div className="mb-4">
         <p className="text-xl font-semibold">
           Next Player:
@@ -104,7 +108,7 @@ const App = () => {
       </div>
 
       <div className="mb-4">
-        {TOKEN_SIZES.map(size => (
+        {[1, 2, 3].map(size => (
           <button
             key={size}
             className={`mx-2 px-4 py-2 rounded ${selectedSize === size ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
@@ -118,11 +122,7 @@ const App = () => {
       <div className="grid grid-cols-3 gap-2 mb-8">
         {board.map((_, index) => renderCell(index))}
       </div>
-      {winner && (
-        <p className="text-2xl font-bold">
-          {winner === 'draw' ? "It's a draw!" : `${winner.name} wins!`}
-        </p>
-      )}
+      {winner && <p className="text-2xl font-bold">{winner.name} wins!</p>}
     </div>
   );
 };
